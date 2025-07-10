@@ -3,8 +3,10 @@ import axios from "axios";
 import { languages } from "./languages";
 import "./App.css";
 
+
 function App() {
   const [input, setInput] = useState("");
+  const [sourceLang, setSourceLang] = useState("en");
   const [targetLang, setTargetLang] = useState("es");
   const [translated, setTranslated] = useState("");
   const [loading, setLoading] = useState(false);
@@ -27,7 +29,7 @@ function App() {
         data: JSON.stringify({
           q: input,
           target: targetLang,
-          source: "en",
+          source: sourceLang,
         }),
       };
       const response = await axios.request(options);
@@ -57,10 +59,24 @@ function App() {
         Translator App using React
       </h1>
       <div className="translator-container">
+        <div className="translator-row" style={{ marginBottom: "1.2rem" }}>
+          <label className="translator-label">Input language:</label>
+          <select
+            className="translator-select"
+            value={sourceLang}
+            onChange={(e) => setSourceLang(e.target.value)}
+          >
+            {languages.map((lang) => (
+              <option key={lang.code} value={lang.code}>
+                {lang.name}
+              </option>
+            ))}
+          </select>
+        </div>
         <textarea
           className="translator-textarea"
           rows={4}
-          placeholder="Enter text in English..."
+          placeholder="Enter text..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
           style={{ marginBottom: "1.2rem" }}
